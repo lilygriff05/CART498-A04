@@ -24,7 +24,7 @@
             display: grid;
             place-items: center;
             color: var(--ink);
-            background: #171814 url("{{ url_for('static', filename='wpp.jpg') }}") center / cover fixed no-repeat;
+            /* background: #171814 url("{{ url_for('static', filename='wpp.jpg') }}") center / cover fixed no-repeat; */
             font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         }
 
@@ -165,23 +165,17 @@
     <main>
         <p class="eyebrow">A little imagination machine</p>
         <h1>Make the ordinary feel <em>otherworldly.</em></h1>
-        <p class="intro">Name an object, a moment, or a half-formed thought. Get back a small, strange piece of language.</p>
+        <p class="intro">Enter an object, a moment, or a half-formed thought to open its exhibit. The gallery text is placeholder Lorem Ipsum for now.</p>
 
-        <form method="POST">
+        <form method="POST" action="{{ url_for('index') }}">
             <label for="prompt">What should we imagine?</label>
             <textarea id="prompt" name="prompt" rows="4" placeholder="A teacup left on the moon…" required></textarea>
+            {% if error %}<p class="hint" role="alert">{{ error }}</p>{% endif %}
             <div class="form-footer">
                 <span class="hint">Short prompts make wonderfully strange answers.</span>
-                <button type="submit">Create something strange <span aria-hidden="true">↗</span></button>
+                <button type="submit">Open the exhibit <span aria-hidden="true">↗</span></button>
             </div>
         </form>
-
-        {% if result %}
-            <section class="result" aria-live="polite" aria-labelledby="result-heading">
-                <h2 id="result-heading">Your response</h2>
-                <p>{{ result }}</p>
-            </section>
-        {% endif %}
     </main>
 </body>
 </html>
