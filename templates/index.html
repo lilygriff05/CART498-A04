@@ -165,11 +165,11 @@
     <main>
         <p class="eyebrow">A little imagination machine</p>
         <h1>Make the ordinary feel <em>otherworldly.</em></h1>
-        <p class="intro">Enter an object, a moment, or a half-formed thought to open its exhibit. The gallery text is placeholder Lorem Ipsum for now.</p>
+        <p class="intro">Enter an object, a moment, or a half-formed thought to generate an artwork and its gallery wall label.</p>
 
         <form method="POST" action="{{ url_for('index') }}">
             <label for="prompt">What should we imagine?</label>
-            <textarea id="prompt" name="prompt" rows="4" placeholder="A teacup left on the moon…" required></textarea>
+            <textarea id="prompt" name="prompt" rows="4" maxlength="500" placeholder="A teacup left on the moon…" required></textarea>
             {% if error %}<p class="hint" role="alert">{{ error }}</p>{% endif %}
             <div class="form-footer">
                 <span class="hint">Short prompts make wonderfully strange answers.</span>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#171814">
-    <title>Your exhibit — Oddly Specific</title>
+    <title>{{ artwork.title }} - Oddly Specific</title>
     <style>
         :root { color-scheme: dark; --ink: #f4f0e7; --muted: #aaa99f; --lime: #d4f16a; }
         * { box-sizing: border-box; }
@@ -24,44 +24,60 @@
             overflow: hidden; border: 1px solid rgba(244, 240, 231, .16); border-radius: 18px;
             background: #25251f; box-shadow: 0 28px 90px rgba(0, 0, 0, .38);
         }
-        figure { position: relative; min-height: 480px; margin: 0; overflow: hidden; }
-        figure img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 42%; }
+        figure { position: relative; min-height: 480px; margin: 0; overflow: hidden; background: #25251f; }
+        figure img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; }
         figure::after { content: ""; position: absolute; inset: 45% 0 0; background: linear-gradient(transparent, rgba(0, 0, 0, .56)); }
-        figcaption { position: absolute; z-index: 1; right: 28px; bottom: 24px; left: 28px; color: rgba(255, 255, 255, .86); font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; }
-        .vertical-copy {
-            display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 18px; padding: 36px;
+        figcaption { position: absolute; z-index: 1; right: 28px; bottom: 24px; left: 28px; color: rgba(255, 255, 255, .86); font-size: .75rem; letter-spacing: .08em; }
+        .wall-label {
+            display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: 36px 34px;
             border-left: 1px solid rgba(244, 240, 231, .14); background: #25251f;
         }
-        .vertical-copy h1 {
-            margin: 0; color: var(--lime); font-size: .62rem; font-weight: 750;
-            letter-spacing: .18em; text-transform: uppercase;
-        }
-        .lorem {
-            max-width: 38ch; margin: 0; color: var(--ink); font-family: Georgia, "Times New Roman", serif;
-            font-size: 1.1rem; line-height: 1.65; overflow-wrap: anywhere;
-        }
+        .wall-label h1 { margin: 0 0 22px; color: var(--muted); font-size: .62rem; font-weight: 750; letter-spacing: .18em; text-transform: uppercase; }
+        .title { margin: 0 0 6px; color: var(--ink); font-family: Georgia, "Times New Roman", serif; font-size: clamp(1.65rem, 2.5vw, 2.15rem); font-weight: 400; line-height: 1.12; }
+        .year { margin: 0 0 18px; color: var(--muted); font-size: .8rem; }
+        .artist { margin: 0 0 4px; color: var(--ink); font-size: .9rem; font-weight: 700; line-height: 1.5; }
+        .artist-bio { margin: 0 0 22px; color: var(--muted); font-size: .8rem; line-height: 1.5; }
+        .label-details { width: 100%; margin: 0 0 22px; font-size: .75rem; line-height: 1.5; }
+        .label-details div { margin-top: 9px; }
+        .label-details dt { color: var(--muted); font-size: .59rem; font-weight: 750; letter-spacing: .12em; text-transform: uppercase; }
+        .label-details dd { margin: 2px 0 0; overflow-wrap: anywhere; }
+        .extended-heading { margin: 0 0 8px; color: var(--muted); font-size: .61rem; font-weight: 750; letter-spacing: .13em; text-transform: uppercase; }
+        .extended-label { max-width: 36ch; margin: 0; color: var(--ink); font-family: Georgia, "Times New Roman", serif; font-size: .88rem; line-height: 1.6; overflow-wrap: anywhere; }
+        .credit { margin: 18px 0 0; padding-top: 14px; border-top: 1px solid rgba(244, 240, 231, .16); color: var(--muted); font-size: .72rem; line-height: 1.55; }
         @media (max-width: 620px) {
             body { padding: 18px; }
             .exhibit { min-height: 0; grid-template-columns: 1fr; }
             figure { min-height: 52vh; }
-            .vertical-copy { gap: 12px; padding: 24px 20px; border-top: 1px solid rgba(244, 240, 231, .14); border-left: 0; }
+            .wall-label { padding: 28px 24px; border-top: 1px solid rgba(244, 240, 231, .14); border-left: 0; }
         }
     </style>
 </head>
 <body>
     <main class="page">
         <header class="topbar">
-            <p class="brand">Oddly Specific · Exhibit 01</p>
-            <a class="back" href="{{ url_for('index') }}">← Create another</a>
+            <p class="brand">Oddly Specific - Exhibit 01</p>
+            <a class="back" href="{{ url_for('index') }}">&#8592; Create another</a>
         </header>
-        <section class="exhibit" aria-label="Photo and sample text exhibit">
+        <section class="exhibit" aria-label="Generated artwork and gallery wall label">
             <figure>
-                <img src="{{ url_for('static', filename='wpp.jpg') }}" alt="A woman caught in a dramatic, windblown moment">
+                <img src="{{ url_for('static', filename=image) }}" alt="Generated artwork titled {{ artwork.title }} by {{ artwork.artist_name }}">
                 <figcaption>Inspired by: {{ prompt }}</figcaption>
             </figure>
-            <aside class="vertical-copy" aria-label="Lorem Ipsum sample">
-                <h1>Exhibit text</h1>
-                <p class="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <aside class="wall-label" aria-label="Artwork wall label">
+                <h1>Gallery wall label</h1>
+                <h2 class="title">{{ artwork.title }}</h2>
+                <p class="year">{{ artwork.year }}</p>
+                <p class="artist">{{ artwork.artist_name }}</p>
+                <p class="artist-bio">{{ artwork.artist_bio }}</p>
+                <dl class="label-details">
+                    <div><dt>Medium</dt><dd>{{ artwork.medium }}</dd></div>
+                    <div><dt>Dimensions</dt><dd>{{ artwork.dimensions }}</dd></div>
+                    <div><dt>Location</dt><dd>{{ artwork.location }}</dd></div>
+                    <div><dt>Provenance</dt><dd>{{ artwork.provenance }}</dd></div>
+                </dl>
+                <h2 class="extended-heading">Extended label</h2>
+                <p class="extended-label">{{ artwork.extended_label }}</p>
+                <p class="credit"><strong>Credit line:</strong> {{ artwork.credit_line }}</p>
             </aside>
         </section>
     </main>
