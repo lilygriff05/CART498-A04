@@ -1,56 +1,187 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ask me anything :D</title>
-
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bJ3RhXh0JMhjY6hW+ALEwIH"
-          crossorigin="anonymous"> -->
-
+    <meta name="theme-color" content="#11120f">
+    <title>Oddly Specific — a little imagination machine</title>
     <style>
+        :root {
+            color-scheme: dark;
+            --ink: #f4f0e7;
+            --muted: #aaa99f;
+            --paper: rgba(24, 25, 21, .88);
+            --line: rgba(244, 240, 231, .15);
+            --lime: #d4f16a;
+        }
+
+        * { box-sizing: border-box; }
+
         body {
-            background-image: url("{{ url_for('static', filename='wpp.jpg') }}");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
             min-height: 100vh;
-            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            padding: 32px 20px;
+            display: grid;
+            place-items: center;
+            color: var(--ink);
+            background: #171814 url("{{ url_for('static', filename='wpp.jpg') }}") center / cover fixed no-repeat;
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(130deg, rgba(11, 13, 10, .72), rgba(11, 13, 10, .35) 55%, rgba(11, 13, 10, .68));
+            pointer-events: none;
+        }
+
+        main {
+            position: relative;
+            width: min(100%, 720px);
+            padding: clamp(28px, 7vw, 64px);
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            background: var(--paper);
+            box-shadow: 0 28px 90px rgba(0, 0, 0, .4);
+            backdrop-filter: blur(16px);
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0 0 24px;
+            color: var(--lime);
+            font-size: .72rem;
+            font-weight: 750;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+        }
+
+        .eyebrow::before { content: ""; width: 24px; height: 1px; background: currentColor; }
+
+        h1 {
+            max-width: 570px;
+            margin: 0;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(2.7rem, 8vw, 5.4rem);
+            font-weight: 400;
+            letter-spacing: -.055em;
+            line-height: .99;
+        }
+
+        h1 em { color: var(--lime); font-weight: 400; }
+
+        .intro {
+            max-width: 440px;
+            margin: 22px 0 34px;
+            color: var(--muted);
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #e8e5dc;
+            font-size: .82rem;
+            font-weight: 650;
+        }
+
+        textarea {
+            display: block;
+            width: 100%;
+            min-height: 142px;
+            resize: vertical;
+            padding: 17px 18px;
+            border: 1px solid var(--line);
+            border-radius: 13px;
+            outline: none;
+            background: rgba(7, 8, 7, .48);
+            color: var(--ink);
+            font: inherit;
+            line-height: 1.6;
+            transition: border-color .2s, box-shadow .2s;
+        }
+
+        textarea::placeholder { color: #85867e; }
+        textarea:focus { border-color: var(--lime); box-shadow: 0 0 0 3px rgba(212, 241, 106, .12); }
+
+        .form-footer {
             display: flex;
             align-items: center;
-            justify-content: center;
-            margin: 0;
-            padding: 20px 0;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 14px;
+        }
+
+        .hint { color: var(--muted); font-size: .78rem; }
+
+        button {
+            min-height: 48px;
+            padding: 0 21px;
+            border: 0;
+            border-radius: 10px;
+            background: var(--lime);
+            color: #1b2010;
+            font: inherit;
+            font-size: .9rem;
+            font-weight: 750;
+            cursor: pointer;
+            transition: transform .18s, background .18s;
+        }
+
+        button:hover { transform: translateY(-2px); background: #e1ff82; }
+        button:focus-visible { outline: 3px solid white; outline-offset: 3px; }
+
+        .result {
+            margin-top: 34px;
+            padding: 22px 24px;
+            border: 1px solid rgba(212, 241, 106, .32);
+            border-radius: 13px;
+            background: rgba(212, 241, 106, .07);
+        }
+
+        .result h2 {
+            margin: 0 0 10px;
+            color: var(--lime);
+            font-size: .72rem;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+        }
+
+        .result p { margin: 0; color: var(--ink); line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; }
+
+        @media (max-width: 520px) {
+            body { padding: 16px; background-attachment: scroll; }
+            main { border-radius: 18px; }
+            .form-footer { align-items: stretch; flex-direction: column; }
+            button { width: 100%; }
         }
     </style>
 </head>
-
 <body>
-    <div class="container text-center mt-5">
-        <h1 class="display-4">Describe an object and get it exhibited with their label</h1>
+    <main>
+        <p class="eyebrow">A little imagination machine</p>
+        <h1>Make the ordinary feel <em>otherworldly.</em></h1>
+        <p class="intro">Name an object, a moment, or a half-formed thought. Get back a small, strange piece of language.</p>
 
-        <form method="POST" class="mx-auto col-md-8 col-lg-6">
-            <div class="mb-3">
-                <textarea
-                    name="prompt"
-                    rows="4"
-                    class="form-control"
-                    placeholder="Enter your prompt..."
-                ></textarea>
-            </div>
-
-            <div class="d-grid">
-                <input type="submit" value="Submit" class="btn btn-primary">
+        <form method="POST">
+            <label for="prompt">What should we imagine?</label>
+            <textarea id="prompt" name="prompt" rows="4" placeholder="A teacup left on the moon…" required></textarea>
+            <div class="form-footer">
+                <span class="hint">Short prompts make wonderfully strange answers.</span>
+                <button type="submit">Create something strange <span aria-hidden="true">↗</span></button>
             </div>
         </form>
 
         {% if result %}
-            <h3 class="mt-4">Response:</h3>
-            <div class="alert alert-secondary">{{ result }}</div>
+            <section class="result" aria-live="polite" aria-labelledby="result-heading">
+                <h2 id="result-heading">Your response</h2>
+                <p>{{ result }}</p>
+            </section>
         {% endif %}
-    </div>
+    </main>
 </body>
 </html>
