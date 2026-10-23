@@ -15,5 +15,5 @@ When the label is generated, it stores the text output into strings for the titl
 ## A User Guide For The Web App
   To begin, describe objects or abstract concepts in short terms in the text box. When satisfied, click the button labelled “open the exhibit" and wait for the gallery installation to be generated. Once complete, you can click the button at the top of the page saying “create another” to be brought back to the previous page where you can input a new prompt.
 
-## Reflection - Why Is The LM Fluent in This Dialect
+## Reflection - Why The LM is Fluent in This Dialect
   The model has been given personality cues that follow many of the IAE rules outlined by Alix Rule & David Levine. Since the model has no concept of generating logical text, it is not hindered by our human need to make sense. Instead, it can do what it is best at: generate the next most likely token and output text that doesn't quite make sense with what seems to be complete certainty. So much of speaking in IAE is acting as though you are the authority on the subject you write, speaking in flowery language, and including just the right buzzwords (vocabulary mentioned by the paper) in order to seem convincing. 
